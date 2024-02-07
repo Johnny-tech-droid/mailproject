@@ -7,13 +7,21 @@ This repository contains a simple Mail app written in Java, utilizing Swing and 
 - **Login Screen**: Users enter their credentials to connect to the mail server for sending and receiving emails.
 
 - **Credential Verification**: The app immediately checks the entered credentials by connecting to the server to perform a login.
+## Main Menu
 
-- **Main Menu**:
-  - **"Empfangen" (Receive)**: Opens a window with a TableView, updating the table by connecting to the mail server and listing emails. Displays a dialog window for new emails or notifies if no new emails are found. Toolbar options allow replying and forwarding emails.
-  
-  - **"Senden" (Send)**: Opens a window for composing and sending emails. Sent emails are displayed in the table.
+The application's main menu provides several functionalities, connecting seamlessly between the email server and a JDBC Apache Derby embedded database.
 
-  - **Quit Button**: Exits the application.
+- **"Empfangen" (Receive)**: Clicking this button opens a window featuring a TableView. The TableView is connected to both the email server and the JDBC database, providing updates on received emails. The application connects to the mail server, retrieves email data, and updates the TableView accordingly. If new emails exist, a dialog window displays them; otherwise, a notification informs the user.
+
+  - **Toolbar Options**:
+    - **Reply**: Respond to selected emails.
+    - **Forward**: Forward selected emails.
+
+- **"Senden" (Send)**: Opens a window for composing and sending emails. Sent emails are stored in the JDBC database and displayed in the TableView.
+
+- **Quit Button**: Exits the application.
+
+This interconnected setup ensures a seamless flow of data between the email server and the local JDBC database, allowing users to efficiently manage their emails within the application.
 
 ## Icons
 
@@ -25,9 +33,11 @@ The coding style is straightforward, reflecting an experienced novice project. T
 
 ## Technical Details
 
-- **Language**: Java
+- **Language**: Java 21
 - **GUI Frameworks**: Swing and AWT
 - **Build Tool**: Maven
+- **Database**: Apache Derby embedded v10.16.1.1
+- **Mail Library**: Eclipse Angus-Mail 2.0.0
 - **Styling**: No CSS styling applied
 - **Icons**: Custom, with a simple design
 
