@@ -27,6 +27,7 @@ The coding style is straightforward, reflecting an experienced novice project. T
 
 - **Language**: Java
 - **GUI Frameworks**: Swing and AWT
+- **Build Tool**: Maven
 - **Styling**: No CSS styling applied
 - **Icons**: Custom, with a simple design
 
