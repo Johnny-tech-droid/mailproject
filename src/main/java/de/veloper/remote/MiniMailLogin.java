@@ -5,19 +5,28 @@ import jakarta.mail.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Properties;
+/**
+ * Diese Klasse repräsentiert das Login-Fenster der MiniMail-Anwendung.
+ */
 
 public class MiniMailLogin extends JDialog {
     private JTextField benutzerFeld;
     private JPasswordField passwortFeld;
     private Properties smtpProperties;
-    private final String SMTP_SERVER = "smtp-mail.outlook.com";
-    private final String SMTP_PORT = "587";
+
+    /**
+     * Konstruktor für das MiniMail-Login-Fenster.
+     * Initialisiert die GUI und setzt die Benutzerdaten.
+     */
     public MiniMailLogin() {
         initGui();
         Constants.setBenutzername(benutzerFeld.getText());
         Constants.setPasswort(new String(passwortFeld.getPassword()));
 
     }
+    /**
+     * Initialisiert die grafische Benutzeroberfläche des Login-Fensters.
+     */
     private void initGui() {
         setLayout(new BorderLayout());
 
@@ -45,7 +54,10 @@ public class MiniMailLogin extends JDialog {
 
 
     }
-
+    /**
+     * Erstellt das Panel für die Benutzereingabe.
+     * @return Das erstellte Panel.
+     */
     private JPanel createInputPanel() {
         JPanel inputPanel = new JPanel(new GridLayout(2, 2));
 
@@ -62,7 +74,10 @@ public class MiniMailLogin extends JDialog {
 
         return inputPanel;
     }
-
+    /**
+     * Authentifiziert den Benutzer über die SMTP-Verbindung.
+     * @return True, wenn die Authentifizierung erfolgreich ist, sonst False.
+     */
     public boolean authenticate() {
         setSmtpProperties();
 
@@ -86,10 +101,24 @@ public class MiniMailLogin extends JDialog {
 
 
     }
+    /**
+     * Setzt die SMTP-Verbindungseigenschaften.
+     */
     private void setSmtpProperties() {
 
+        String SMTP_SERVER = "smtp-mail.outlook.com";
+        String SMTP_PORT = "587";
         smtpProperties = createProperties(true, true, SMTP_SERVER, SMTP_PORT, "mail.smtp");
     }
+    /**
+     * Erstellt die Eigenschaften für die Verbindung.
+     * @param auth Authentifizierung aktivieren.
+     * @param tls TLS-Verschlüsselung aktivieren.
+     * @param host Hostname des Servers.
+     * @param port Port des Servers.
+     * @param protocolPrefix Präfix für das Protokoll.
+     * @return Die erstellten Eigenschaften.
+     */
     private Properties createProperties(boolean auth, boolean tls, String host, String port, String protocolPrefix) {
         Properties properties = new Properties();
         properties.put(protocolPrefix + ".auth", auth);
