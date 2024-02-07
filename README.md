@@ -17,7 +17,10 @@ The application's main menu provides several functionalities, connecting seamles
     - **Reply**: Respond to selected emails.
     - **Forward**: Forward selected emails.
 
-- **"Senden" (Send)**: Opens a window for composing and sending emails. Sent emails are stored in the JDBC database and displayed in the TableView.
+- **"Senden" (Send)**: Clicking this button opens a window with a TableView, displaying sent emails stored in the JDBC database. The TableView window also features a Toolbar with additional functionality:
+
+  - **Toolbar Options**:
+    - **Compose**: Opens a new window to compose and send new emails.
 
 - **Quit Button**: Exits the application.
 
