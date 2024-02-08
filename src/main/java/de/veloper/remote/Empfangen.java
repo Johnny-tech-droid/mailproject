@@ -12,8 +12,8 @@ import java.util.Properties;
 public class Empfangen extends JFrame {
     private JTable tabelle;
     private DefaultTableModel modell;
-    private MeineAktionen antwortenAct;
-    private MeineAktionen weiterleitenAct;
+    private final MeineAktionen antwortenAct;
+    private final MeineAktionen weiterleitenAct;
     // ---- Einsendeaufgabe JAVA17D-XX01-N01 -----
     // TODO: AUFGABE 1
 
@@ -23,8 +23,8 @@ public class Empfangen extends JFrame {
      * Durch eine Eingabe von TextFeld bzw. PasswortFeld
      * temp. gespeicherte Anmeldedaten werden für versch. Aufgaben der App verwendet
      */
-    private String benutzername = Constants.getBenutzername();
-    private String passwort = Constants.getPasswort();
+    private final String benutzername = Constants.getBenutzername();
+    private final String passwort = Constants.getPasswort();
     class MeinWindowAdapter extends WindowAdapter{
         @Override
         public void windowOpened(WindowEvent e) {
@@ -181,7 +181,7 @@ public class Empfangen extends JFrame {
             posteingang.open(Folder.READ_WRITE);
 
             //die Nachrichten beschaffen
-            Message nachrichten[] = posteingang.getMessages();
+            Message nachrichten [] = posteingang.getMessages();
 
             //gibt es neue Nachrichten?
             if (nachrichten.length != 0) {
