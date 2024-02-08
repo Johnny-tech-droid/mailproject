@@ -30,14 +30,11 @@ public class Empfangen extends JFrame {
         public void windowOpened(WindowEvent e) {
             nachrichtenEmpfangen();
         }
-
-
     }
-    // Folgende Klasse wurde abgewandelt übernommen aus der Klasse "Senden.java"
-    // Erstellt den Konstruktor und das ActionEvent für die Buttons der ToolBar
     class MeineAktionen extends AbstractAction {
         public MeineAktionen(String text, ImageIcon icon, String beschreibung, KeyStroke shortcut, String actionText) {
             super(text, icon);
+
             putValue(SHORT_DESCRIPTION, beschreibung);
             putValue(ACCELERATOR_KEY, shortcut);
             putValue(ACTION_COMMAND_KEY, actionText);
@@ -45,12 +42,14 @@ public class Empfangen extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+
             if (e.getActionCommand().equals("antworten"))
                 antworten();
             if (e.getActionCommand().equals("weiterleiten"))
                 weiterleiten();
         }
     }
+
     // Konstruktor
     public Empfangen() {
         super();

@@ -12,12 +12,14 @@ import java.sql.ResultSet;
 
 public class Senden extends JFrame {
     private MeineAktionen sendenAct;
-    private MeineAktionen antwortenAct;
     private JTable tabelle;
     private DefaultTableModel modell;
+
+
     class MeineAktionen extends AbstractAction {
         public MeineAktionen(String text, ImageIcon icon, String beschreibung, KeyStroke shortcut, String actionText) {
             super(text, icon);
+
             putValue(SHORT_DESCRIPTION, beschreibung);
             putValue(ACCELERATOR_KEY, shortcut);
             putValue(ACTION_COMMAND_KEY, actionText);
@@ -25,6 +27,7 @@ public class Senden extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+
             if (e.getActionCommand().equals("senden"))
                 senden();
 
@@ -49,11 +52,7 @@ public class Senden extends JFrame {
                 "Erstellt eine neue E-Mail",
                 null,
                 "senden");
-        antwortenAct = new MeineAktionen("Antworten",
-                new ImageIcon("filename"),
-                "Antwortet auf die ausgewaehlte E-Mail",
-                null,
-                "antworten");
+
         add(symbolleiste(), BorderLayout.NORTH);
         setVisible(true);
         setSize(700,300);
@@ -151,8 +150,6 @@ public class Senden extends JFrame {
         JToolBar leiste = new JToolBar();
         //die Symbole über die Aktionen einbauen
         leiste.add(sendenAct);
-        leiste.add(antwortenAct);
-
         //die Leiste zurückgeben
         return (leiste);
     }
