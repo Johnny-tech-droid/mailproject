@@ -181,7 +181,7 @@ public class Empfangen extends JFrame {
             posteingang.open(Folder.READ_WRITE);
 
             //die Nachrichten beschaffen
-            Message nachrichten [] = posteingang.getMessages();
+            Message[] nachrichten = posteingang.getMessages();
 
             //gibt es neue Nachrichten?
             if (nachrichten.length != 0) {
@@ -221,7 +221,10 @@ public class Empfangen extends JFrame {
             }
             //sonst geben wir eine Meldung aus
             else
-                JOptionPane.showMessageDialog(this, "Der Typ der Nachricht " + nachricht.getContentType() + "kann nicht verarbeitet werden.");
+                JOptionPane.showMessageDialog(this,
+                        "Der Typ der Nachricht "
+                        + nachricht.getContentType()
+                        + "kann nicht verarbeitet werden.");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -256,7 +259,7 @@ public class Empfangen extends JFrame {
         }
         catch (Exception e) {
             e.printStackTrace();
-            e.toString();
+            System.err.println(e);
         }
     }
     private void antworten() {
