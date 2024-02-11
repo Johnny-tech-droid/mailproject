@@ -10,8 +10,10 @@ import java.util.Properties;
  */
 
 public class MiniMailLogin extends JDialog {
+    // die Variablen für die Logindaten
     private JTextField benutzerFeld;
     private JPasswordField passwortFeld;
+    // die eigenschaften für die Verbindung mit dem Server
     private Properties smtpProperties;
 
     /**
@@ -20,8 +22,8 @@ public class MiniMailLogin extends JDialog {
      */
     public MiniMailLogin() {
         initGui();
-        Constants.setBenutzername(benutzerFeld.getText());
-        Constants.setPasswort(new String(passwortFeld.getPassword()));
+        Constants.setBENUTZERNAME(benutzerFeld.getText());
+        Constants.setPASSWORT(new String(passwortFeld.getPassword()));
 
     }
     /**
@@ -37,8 +39,9 @@ public class MiniMailLogin extends JDialog {
         loginBtn.addActionListener(e -> {
             if (authenticate()) {
                 new MiniMailStart("MiniMail Start");
-                Constants.setBenutzername(benutzerFeld.getText());
-                Constants.setPasswort(new String(passwortFeld.getPassword()));
+                Constants.setBENUTZERNAME(benutzerFeld.getText());
+                Constants.setPASSWORT(new String(passwortFeld.getPassword()));
+                dispose();
             }
             else {
                 System.err.println("FAILURE");

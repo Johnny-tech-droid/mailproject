@@ -1,22 +1,31 @@
 package de.veloper.remote;
 
 public class Constants {
-    private static String benutzername;
-    private static String passwort;
+    // Die Konstanten für die Anmeldedaten
+    private static String BENUTZERNAME;
+    private static String PASSWORT;
 
-    public static String getBenutzername() {
-        return benutzername;
+    // Die URL der Datenbank für die Verbindung mit der Datenbank
+    private static final String DB_URL = "jdbc:derby:/Users/developer/Developer/Database/mailprojectDB";
+
+    // ----- GETTER UND SETTER ------- //
+    public static String getDB_URL() {
+        return DB_URL;
     }
 
-    public static void setBenutzername(String benutzername) {
-        Constants.benutzername = benutzername;
+    public static String getBENUTZERNAME() {
+        return BENUTZERNAME;
     }
 
-    public static String getPasswort() {
-        return passwort;
+    public static void setBENUTZERNAME(String BENUTZERNAME) {
+        Constants.BENUTZERNAME = BENUTZERNAME;
     }
 
-    public static void setPasswort(String passwort) {
-        Constants.passwort = passwort;
+    public static String getPASSWORT() {
+        return PASSWORT;
+    }
+
+    public static void setPASSWORT(String PASSWORT) {
+        Constants.PASSWORT = PASSWORT;
     }
 }

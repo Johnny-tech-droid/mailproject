@@ -1,8 +1,9 @@
 package de.veloper.remote;
 
-import jakarta.mail.Authenticator;
-import jakarta.mail.PasswordAuthentication;
-import jakarta.mail.Session;
+import jakarta.mail.*;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,12 +14,15 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class NeueNachricht extends JDialog{
+public class NeueNachricht extends JDialog {
+    // die Eingabefelder
     private JTextField empfaenger, betreff;
-    private String benutzername = Constants.getBenutzername();
-    private String passwort = Constants.getPasswort();
     private JTextArea inhalt;
-    private JButton ok, abbrechen;
+    // die Variablen als Platzhalter der Logindaten
+    private String benutzername = Constants.getBENUTZERNAME();
+    private String passwort = Constants.getPASSWORT();
+
+    // die innere Klasse für den ActionListener
     class NeuListener implements ActionListener {
 
         @Override
@@ -29,13 +33,15 @@ public class NeueNachricht extends JDialog{
                 dispose();
         }
     }
-
+    // Methode zum Versenden der Nachricht über den E-Mail-Server
+    // Verbindung zur DB mit nachrichtSpeichern() Methode
     private void senden() {
         Session sitzung = verbindungHerstellen();
         nachrichtVerschicken(sitzung);
         nachrichtSpeichern();
 
     }
+
 
     private void nachrichtSpeichern() {
         Connection verbindung;
@@ -64,6 +70,20 @@ public class NeueNachricht extends JDialog{
 
     private void nachrichtVerschicken(Session sitzung) {
         String absender = benutzername;
+        try {
+            MimeMessage nachricht = new MimeMessage(sitzung);
+            nachricht.setFrom(absender);
+            nachricht.setRecipients(Message.RecipientType.TO, InternetAddress.parse(empfaenger.getText()));
+            nachricht.setSubject(betreff.getText());
+            nachricht.setText(inhalt.getText());
+            Transport.send(nachricht);
+            JOptionPane.showMessageDialog(this, "Die Nachricht wurde verschickt");
+            dispose();
+        } catch (AddressException e) {
+            throw new RuntimeException(e);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -177,12 +197,12 @@ public class NeueNachricht extends JDialog{
         JPanel panel = new JPanel();
 
         // Buttons
-        ok = new JButton("Senden");
+        JButton ok = new JButton("Senden");
         ok.setActionCommand("senden");
-        abbrechen = new JButton("Abbrechen");
+        JButton abbrechen = new JButton("Abbrechen");
         abbrechen.setActionCommand("abbrechen");
 
-        // Action listener
+        // ActionListener
         NeuListener listener = new NeuListener();
         ok.addActionListener(listener);
         abbrechen.addActionListener(listener);
