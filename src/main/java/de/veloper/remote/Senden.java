@@ -48,7 +48,7 @@ public class Senden extends JFrame {
         setTitle("E-Mail senden");
         setLayout(new BorderLayout());
         sendenAct = new MeineAktionen("Neue E-Mail",
-                new ImageIcon("src/main/resources/icons/Outgoing.png"),
+                new ImageIcon("src/main/resources/icons/create_icon_half.png"),
                 "Erstellt eine neue E-Mail",
                 null,
                 "senden");
@@ -118,7 +118,7 @@ public class Senden extends JFrame {
 
         try{
             //Verbindung herstellen und Ergebnismenge beschaffen
-            verbindung = MiniDBTools.oeffnenDB("jdbc:derby:/Users/developer/Developer/Database/mailprojectDB");
+            verbindung = MiniDBTools.oeffnenDB(Constants.getDB_URL());
             ergebnisMenge = MiniDBTools.liefereErgebnis(verbindung, "SELECT * FROM gesendet");
             //die Einträge in die Tabelle schreiben
             while (ergebnisMenge.next()) {
@@ -137,7 +137,7 @@ public class Senden extends JFrame {
             //die Verbindungen wieder schließen und trennen
             ergebnisMenge.close();
             verbindung.close();
-            MiniDBTools.schliessenDB("jdbc:derby:mailDB");
+            MiniDBTools.schliessenDB(Constants.getDB_URL());
         }
         catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Problem: \n" + e.toString());

@@ -30,8 +30,32 @@ public class NeueNachricht extends JDialog {
                 senden();
             if (e.getActionCommand().equals("abbrechen"))
                 dispose();
+
         }
     }
+    // ------ KONSTRUKTOR ------ //
+    // für allgemeine neue Nachricht verfassen
+    public NeueNachricht(JFrame parent, boolean modal) {
+        super(parent, modal);
+        setTitle("Neue Nachricht");
+        initGui();
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    }
+    // für Nachricht weiterleiten
+    public NeueNachricht(JFrame parent, boolean modal, String betreff, String inhalt) {
+        super(parent, modal);
+        setTitle("Weiterleiten");
+        initGui(betreff, null, inhalt);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    }
+    // für Nachricht beantworten
+    public NeueNachricht(JFrame parent, boolean modal, String empfaenger, String betreff, String inhalt) {
+        super(parent, modal);
+        setTitle("Antwort");
+        initGui(betreff, empfaenger, inhalt);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    }
+
     // Methode zum Versenden der Nachricht über den E-Mail-Server
     // Verbindung zur DB mit nachrichtSpeichern() Methode
     private void senden() {
@@ -41,10 +65,10 @@ public class NeueNachricht extends JDialog {
 
     }
 
-
+    // --------- DATABASE RELATED ------ //
     private void nachrichtSpeichern() {
         Connection verbindung;
-        verbindung = MiniDBTools.oeffnenDB("jdbc:derby:/Users/developer/Developer/Database/mailprojectDB");
+        verbindung = MiniDBTools.oeffnenDB(Constants.getDB_URL());
         try {
             //einen Eintrag in der Tabelle gesendet anlegen
             //über ein vorbereitetes Statement
@@ -61,12 +85,12 @@ public class NeueNachricht extends JDialog {
             prepState.close();
             verbindung.close();
             //und die Datenbank schließen
-            MiniDBTools.schliessenDB("jdbc:derby:/Users/developer/Developer/Database/mailprojectDB");
+            MiniDBTools.schliessenDB(Constants.getDB_URL());
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Problem: \n" + e);
         }
     }
-
+    // ------- EMAIL SERVER RELATED -------- //
     private void nachrichtVerschicken(Session sitzung) {
         String absender = benutzername;
         try {
@@ -84,10 +108,11 @@ public class NeueNachricht extends JDialog {
 
     }
 
+
     private Session verbindungHerstellen() {
 
         //der Server
-        String server = "smtp-mail.outlook.com";
+        String server = Constants.getSmtpServer();
 
         //die Eigenschaften setzen
         Properties eigenschaften = new Properties();
@@ -108,19 +133,7 @@ public class NeueNachricht extends JDialog {
         });
     }
 
-    public NeueNachricht(JFrame parent, boolean modal) {
-        super(parent, modal);
-        setTitle("Neue Nachricht");
-        initGui();
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-    }
-    public NeueNachricht(JFrame parent, boolean modal, String empfaenger, String betreff, String inhalt) {
-        super(parent, modal);
-        setTitle("Antwort");
-        initGui(betreff, empfaenger, inhalt);
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-    }
-
+    // ------- VIEW RELATED ------ //
     private void initGui() {
         setLayout(new BorderLayout());
 
@@ -193,10 +206,13 @@ public class NeueNachricht extends JDialog {
         JPanel panel = new JPanel();
 
         // Buttons
-        JButton ok = new JButton("Senden");
+        JButton ok = new JButton();
+        ok.setToolTipText("Nachricht absenden");
+        ok.setIcon(new ImageIcon("src/main/resources/send_icon_half.png"));
         ok.setActionCommand("senden");
         JButton abbrechen = new JButton("Abbrechen");
         abbrechen.setActionCommand("abbrechen");
+
 
         // ActionListener
         NeuListener listener = new NeuListener();

@@ -29,8 +29,8 @@ public class Anzeige extends JDialog {
         //die Oberfläche erstellen
         initGui(ID, empfaenger, betreff, inhalt);
 
-        //Standardoperation setzen
-        //hier den Dialog ausblenden und löschen
+        // Standardoperationen setzen
+        // hier den Dialog ausblenden und löschen
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
     }
     private void initGui(String iD, String empfaenger, String betreff, String inhalt) {
@@ -62,6 +62,7 @@ public class Anzeige extends JDialog {
         //die Schaltfläche
         ok = new JButton("OK");
         ok.setActionCommand("ok");
+
 
         NeuListener listener = new NeuListener();
         ok.addActionListener(listener);

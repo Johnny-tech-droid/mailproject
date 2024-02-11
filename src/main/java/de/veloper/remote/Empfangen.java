@@ -9,6 +9,7 @@ import java.awt.event.*;
 import java.sql.*;
 import java.util.Properties;
 
+
 /**
  * Diese Klasse repräsentiert ein Fenster zum Empfangen von E-Mails.
  */
@@ -17,6 +18,8 @@ public class Empfangen extends JFrame {
     private DefaultTableModel modell;
     private final MeineAktionen antwortenAct;
     private final MeineAktionen weiterleitenAct;
+    private final MeineAktionen homeAct;
+    private final MeineAktionen syncAct;
 
     /**
      * Benutzername und Kennwort sollen nicht mehr fest im Code hinterlegt werden,
@@ -46,6 +49,7 @@ public class Empfangen extends JFrame {
             putValue(SHORT_DESCRIPTION, beschreibung);
             putValue(ACCELERATOR_KEY, shortcut);
             putValue(ACTION_COMMAND_KEY, actionText);
+
         }
 
         @Override
@@ -54,7 +58,20 @@ public class Empfangen extends JFrame {
                 antworten();
             if (e.getActionCommand().equals("weiterleiten"))
                 weiterleiten();
+            if (e.getActionCommand().equals("home"))
+                nachHause();
+            if (e.getActionCommand().equals("syncMailbox"))
+                synchronisieren();
         }
+    }
+
+    private void synchronisieren() {
+        nachrichtenEmpfangen();
+
+    }
+
+    private void nachHause() {
+        dispose();
     }
 
     /**
@@ -64,16 +81,19 @@ public class Empfangen extends JFrame {
         super();
         setTitle("E-Mail empfangen");
         setLayout(new BorderLayout());
+        // neue Buttons, gleiches Muster wie bei Senden.java Actions
         antwortenAct = new MeineAktionen("Antworten",
-                new ImageIcon("src/main/resources/icons/antworten.png"),
+                new ImageIcon("src/main/resources/icons/reply_icon_half.png"),
                 "Antwortet auf die ausgewählte E-Mail",
                 null,
                 "antworten");
         weiterleitenAct = new MeineAktionen("Weiterleiten",
-                new ImageIcon("src/main/resources/icons/weiterleiten.png"),
+                new ImageIcon("src/main/resources/icons/forward_icon_half.png"),
                 "Leitet die ausgewählte E-Mail weiter",
                 null,
                 "weiterleiten");
+        homeAct = new MeineAktionen("Hauptmenü", new ImageIcon("src/main/resources/icons/home_icon.png"), "Zurück zum Hauptmenü", null, "home");
+        syncAct = new MeineAktionen("Sync", new ImageIcon("src/main/resources/icons/syncbox_icon_half.png"), "Synchronisiert den Posteingang", null, "syncMailbox");
         add(symbolleiste(), BorderLayout.NORTH);
         setVisible(true);
         setSize(700, 300);
@@ -84,6 +104,7 @@ public class Empfangen extends JFrame {
         tabelleAktualisieren();
     }
 
+
     /**
      * Erstellt die Toolbar zusammen mit den Buttons.
      *
@@ -92,8 +113,11 @@ public class Empfangen extends JFrame {
     private JToolBar symbolleiste() {
         JToolBar leiste = new JToolBar();
         // die Symbole über die Aktionen einbauen
+        leiste.add(homeAct);
         leiste.add(antwortenAct);
         leiste.add(weiterleitenAct);
+
+        leiste.add(syncAct);
 
         // die Leiste zurückgeben
         return leiste;
@@ -322,11 +346,11 @@ public class Empfangen extends JFrame {
     private void weiterleiten() {
         int selectedRow = tabelle.getSelectedRow();
         if (selectedRow >= 0) {
-            String empfaenger = null;
+
             String betreff = "WG: " + tabelle.getModel().getValueAt(selectedRow, 2).toString();
             String orgInhalt = tabelle.getModel().getValueAt(selectedRow, 3).toString();
             String inhalt = "\n\n------- Text der ursprünglichen Nachricht --------\n" + orgInhalt;
-            new NeueNachricht(this, true, empfaenger, betreff, inhalt);
+            new NeueNachricht(this, true, betreff, inhalt);
             tabelleAktualisieren();
         } else {
             JOptionPane.showMessageDialog(this, "Eine Nachricht anklicken für weiterleiten.");
