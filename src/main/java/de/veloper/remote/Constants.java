@@ -4,6 +4,10 @@ public class Constants {
     // Die Konstanten für die Anmeldedaten
     private static String BENUTZERNAME;
     private static String PASSWORT;
+    private static String SMTP_SERVER = "smtp-mail.outlook.com";
+
+    private static String SMTP_PORT = "587";
+
 
     // Die URL der Datenbank für die Verbindung mit der Datenbank
     private static final String DB_URL = "jdbc:derby:/Users/developer/Developer/Database/mailprojectDB";
@@ -27,5 +31,12 @@ public class Constants {
 
     public static void setPASSWORT(String PASSWORT) {
         Constants.PASSWORT = PASSWORT;
+    }
+    public static String getSmtpServer() {
+        return SMTP_SERVER;
+    }
+
+    public static String getSmtpPort() {
+        return SMTP_PORT;
     }
 }

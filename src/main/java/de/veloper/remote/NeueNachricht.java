@@ -1,7 +1,6 @@
 package de.veloper.remote;
 
 import jakarta.mail.*;
-import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
@@ -19,8 +18,8 @@ public class NeueNachricht extends JDialog {
     private JTextField empfaenger, betreff;
     private JTextArea inhalt;
     // die Variablen als Platzhalter der Logindaten
-    private String benutzername = Constants.getBENUTZERNAME();
-    private String passwort = Constants.getPASSWORT();
+    private final String benutzername = Constants.getBENUTZERNAME();
+    private final String passwort = Constants.getPASSWORT();
 
     // die innere Klasse für den ActionListener
     class NeuListener implements ActionListener {
@@ -79,9 +78,7 @@ public class NeueNachricht extends JDialog {
             Transport.send(nachricht);
             JOptionPane.showMessageDialog(this, "Die Nachricht wurde verschickt");
             dispose();
-        } catch (AddressException e) {
-            throw new RuntimeException(e);
-        } catch (MessagingException e) {
+        } catch (RuntimeException | MessagingException e) {
             throw new RuntimeException(e);
         }
 
@@ -103,13 +100,12 @@ public class NeueNachricht extends JDialog {
         eigenschaften.put("mail.smtp.port", "587");
 
         // das Session-Objekt erstellen
-        Session sitzung = Session.getInstance(eigenschaften, new Authenticator() {
+
+        return Session.getInstance(eigenschaften, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(benutzername, passwort);
             }
         });
-
-        return sitzung;
     }
 
     public NeueNachricht(JFrame parent, boolean modal) {

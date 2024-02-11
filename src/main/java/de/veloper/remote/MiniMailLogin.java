@@ -84,7 +84,8 @@ public class MiniMailLogin extends JDialog {
     public boolean authenticate() {
         setSmtpProperties();
 
-        // smtp properties
+        // Verbindung zum E-Mail-Server für die Authentifizierung der eingegebenen Nutzerdaten
+        // angepasst für die Verbindung mit Outlook.com
 
         Session session = Session.getInstance(smtpProperties, new Authenticator() {
             @Override
@@ -109,23 +110,22 @@ public class MiniMailLogin extends JDialog {
      */
     private void setSmtpProperties() {
 
-        String SMTP_SERVER = "smtp-mail.outlook.com";
-        String SMTP_PORT = "587";
-        smtpProperties = createProperties(true, true, SMTP_SERVER, SMTP_PORT, "mail.smtp");
+        String smtpServer = Constants.getSmtpServer();
+        String smtpPort = Constants.getSmtpPort();
+        smtpProperties = createProperties(smtpServer, smtpPort, "mail.smtp");
     }
     /**
      * Erstellt die Eigenschaften für die Verbindung.
-     * @param auth Authentifizierung aktivieren.
-     * @param tls TLS-Verschlüsselung aktivieren.
+
      * @param host Hostname des Servers.
      * @param port Port des Servers.
      * @param protocolPrefix Präfix für das Protokoll.
      * @return Die erstellten Eigenschaften.
      */
-    private Properties createProperties(boolean auth, boolean tls, String host, String port, String protocolPrefix) {
+    private Properties createProperties(String host, String port, String protocolPrefix) {
         Properties properties = new Properties();
-        properties.put(protocolPrefix + ".auth", auth);
-        properties.put(protocolPrefix + ".starttls.enable", tls);
+        properties.put(protocolPrefix + ".auth", true);
+        properties.put(protocolPrefix + ".starttls.enable", true);
         properties.put(protocolPrefix + ".host", host);
         properties.put(protocolPrefix + ".port", port);
         return properties;
