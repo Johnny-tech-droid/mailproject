@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Properties;
 
-import static org.kordamp.ikonli.material2.Material2OutlinedAL.LOGIN;
+import static org.kordamp.ikonli.materialdesign2.MaterialDesignL.LOGIN;
 
 
 /**
@@ -45,14 +45,16 @@ public class MiniMailLogin extends JDialog {
         borderLayout.setVgap(10);
         JPanel inputPanel = createInputPanel();
 
-        add(inputPanel, BorderLayout.CENTER);
+        add(inputPanel, BorderLayout.NORTH);
         JPanel loginBtnPanel = createLoginButton();
-        add(loginBtnPanel, BorderLayout.SOUTH);
+        add(loginBtnPanel, BorderLayout.CENTER);
         setTitle("MiniMail Login");
         setSize(380, 150);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        setLocationByPlatform(true);
         setVisible(true);
+        add(new Label(), BorderLayout.SOUTH);
 
         setResizable(false);
 
@@ -65,13 +67,15 @@ public class MiniMailLogin extends JDialog {
      */
     private JPanel createInputPanel() {
         JPanel inputPanel = new JPanel();
-        FlowLayout flowLayout = new FlowLayout();
-//        flowLayout.setHgap(10);
+
+
+        GridLayout gridLayout = new GridLayout(0,2);
+        inputPanel.setLayout(gridLayout);
 
         JLabel benutzerLabel = new JLabel("Benutzer:");
         benutzerFeld = new JTextField();
         benutzerFeld.setColumns(20);
-        benutzerFeld.setLayout(flowLayout);
+
 
         JLabel passwortLabel = new JLabel("Passwort:");
         passwortFeld = new JPasswordField();
@@ -155,9 +159,10 @@ public class MiniMailLogin extends JDialog {
         tempPanel.setLayout(gridLayout);
         loginBtn = createButton(LOGIN, "Jetzt einloggen");
         loginBtn.addActionListener(e -> checkForAuthentication());
+
         tempPanel.add(new JLabel());
-//        gridLayout.setHgap(10);
-//        gridLayout.setVgap(10);
+        gridLayout.setHgap(10);
+        gridLayout.setVgap(10);
         tempPanel.add(loginBtn);
 
         return tempPanel;

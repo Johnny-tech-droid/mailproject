@@ -8,9 +8,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static org.kordamp.ikonli.material2.Material2OutlinedAL.LOG_OUT;
 import static org.kordamp.ikonli.materialdesign2.MaterialDesignE.EMAIL_RECEIVE_OUTLINE;
 import static org.kordamp.ikonli.materialdesign2.MaterialDesignE.EMAIL_SEND_OUTLINE;
+import static org.kordamp.ikonli.materialdesign2.MaterialDesignL.LOGOUT;
 
 public class MiniMailStart extends JFrame {
     class MeinListener implements ActionListener {
@@ -21,14 +21,31 @@ public class MiniMailStart extends JFrame {
             switch(e.getActionCommand()) {
                 case "senden" -> senden();
                 case "empfangen" -> empfangen();
-                case "beenden" -> beenden();
+                case "ende" -> beenden();
+                case "test" -> getSizeForMenu();
             }
         }
     }
 
+    private void getSizeForMenu() {
+        System.out.println(this.getSize());
+    }
+
     public MiniMailStart(String title) throws HeadlessException {
         super(title);
+        JPanel guiPanel = createButtonPanel();
+        add(guiPanel);
 
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+        setSize(472,78);
+        setResizable(false);
+        setLocationRelativeTo(null);
+
+    }
+    private JPanel createButtonPanel() {
+        JPanel tempPanel = new JPanel();
+        tempPanel.setLayout(new GridLayout(0,3));
         MeinListener listener = new MeinListener();
 
         JButton postausgang = createButton(EMAIL_SEND_OUTLINE,
@@ -39,19 +56,17 @@ public class MiniMailStart extends JFrame {
                 "empfangen", listener,
                 "Öffnet die gesendeten E-Mails.",
                 "Empfangene E-Mails");
-        JButton ausloggen = createButton(LOG_OUT,
+        JButton ausloggen = createButton(LOGOUT,
                 "ende", listener,
                 "User ausloggen und Programm beenden.",
                 "Programm beenden");
 
-        add(posteingang);
-        add(postausgang);
-        add(ausloggen);
+        tempPanel.add(posteingang);
+        tempPanel.add(postausgang);
+        tempPanel.add(ausloggen);
 
         pack();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
-
+        return tempPanel;
     }
 
 
