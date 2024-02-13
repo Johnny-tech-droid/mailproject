@@ -39,18 +39,22 @@ public class MiniMailLogin extends JDialog {
      */
     private void initGui() {
 
-
+        BorderLayout borderLayout = new BorderLayout();
+        setLayout(borderLayout);
+        borderLayout.setHgap(10);
+        borderLayout.setVgap(10);
         JPanel inputPanel = createInputPanel();
 
         add(inputPanel, BorderLayout.CENTER);
-        createLoginButton();
-        add(loginBtn, BorderLayout.SOUTH);
+        JPanel loginBtnPanel = createLoginButton();
+        add(loginBtnPanel, BorderLayout.SOUTH);
         setTitle("MiniMail Login");
-        setSize(300, 150);
+        setSize(380, 150);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
 
+        setResizable(false);
 
     }
 
@@ -62,7 +66,7 @@ public class MiniMailLogin extends JDialog {
     private JPanel createInputPanel() {
         JPanel inputPanel = new JPanel();
         FlowLayout flowLayout = new FlowLayout();
-        flowLayout.setHgap(10);
+//        flowLayout.setHgap(10);
 
         JLabel benutzerLabel = new JLabel("Benutzer:");
         benutzerFeld = new JTextField();
@@ -138,15 +142,25 @@ public class MiniMailLogin extends JDialog {
         JButton tempButton = new JButton();
         FontIcon tempIcon = new FontIcon();
         tempIcon.setIkon(iconEnum);
+        tempIcon.setIconSize(25);
         tempButton.setIcon(tempIcon);
 
         tempButton.setToolTipText(tooltiptext);
         return tempButton;
     }
 
-    private void createLoginButton() {
+    private JPanel createLoginButton() {
+        JPanel tempPanel = new JPanel();
+        GridLayout gridLayout = new GridLayout(0,3);
+        tempPanel.setLayout(gridLayout);
         loginBtn = createButton(LOGIN, "Jetzt einloggen");
         loginBtn.addActionListener(e -> checkForAuthentication());
+        tempPanel.add(new JLabel());
+//        gridLayout.setHgap(10);
+//        gridLayout.setVgap(10);
+        tempPanel.add(loginBtn);
+
+        return tempPanel;
     }
 
     private void checkForAuthentication() {
