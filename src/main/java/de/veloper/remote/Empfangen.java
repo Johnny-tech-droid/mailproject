@@ -23,14 +23,7 @@ import static org.kordamp.ikonli.materialdesign2.MaterialDesignH.HOME_OUTLINE;
 public class Empfangen extends JFrame {
     private JTable tabelle;
     private DefaultTableModel modell;
-
-
-    //    private final MeineAktionen antwortenAct;
-//    private final MeineAktionen weiterleitenAct;
-//    private final MeineAktionen homeAct;
-//    private final MeineAktionen syncAct;
     private JButton antwortenBtn, weiterleitenBtn, syncBtn, homeBtn;
-
     /**
      * Benutzername und Kennwort sollen nicht mehr fest im Code hinterlegt werden,
      * sondern von außen geladen werden. Durch eine Eingabe von TextFeld bzw. PasswortFeld
@@ -38,8 +31,6 @@ public class Empfangen extends JFrame {
      */
     private final String benutzername = Constants.getBENUTZERNAME();
     private final String passwort = Constants.getPASSWORT();
-
-
     /**
      * Ein WindowAdapter für das Empfangen von Nachrichten beim Öffnen des Fensters.
      */
@@ -49,9 +40,7 @@ public class Empfangen extends JFrame {
             nachrichtenEmpfangen();
         }
     }
-
     class MeinListener implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             switch (e.getActionCommand()) {
@@ -71,8 +60,6 @@ public class Empfangen extends JFrame {
 
     }
 
-
-
     /**
      * Konstruktor für das Empfangen-Fenster.
      */
@@ -80,35 +67,6 @@ public class Empfangen extends JFrame {
         super();
         setTitle("E-Mail empfangen");
         setLayout(new BorderLayout());
-
-//        FontIcon antwortenIcon = createFontIcon(REPLY);
-//        FontIcon weiterleitenIcon = createFontIcon(FORWARD_TO_INBOX);
-//        FontIcon homeIcon = createFontIcon(HOME_OUTLINE);
-//        FontIcon syncIcon = createFontIcon(EMAIL_SYNC_OUTLINE);
-
-//
-//        // neue Buttons, gleiches Muster wie bei Senden.java Actions
-//        antwortenAct = new MeineAktionen("Antworten",
-//                antwortenIcon,
-//                "Antwortet auf die ausgewählte E-Mail",
-//                null,
-//                "antworten");
-//
-//        weiterleitenAct = new MeineAktionen("Weiterleiten",
-//                weiterleitenIcon,
-//                "Leitet die ausgewählte E-Mail weiter",
-//                null,
-//                "weiterleiten");
-//        homeAct = new MeineAktionen("Hauptmenü",
-//                homeIcon,
-//                "Zurück zum Hauptmenü",
-//                null,
-//                "home");
-//        syncAct = new MeineAktionen("Sync",
-//                syncIcon,
-//                "Synchronisiert den Posteingang",
-//                null,
-//                "syncMailbox");
 
         MeinListener listener = new MeinListener();
         antwortenBtn = createButton(REPLY, "Antwortet auf die ausgewählte E-Mail.", "antworten", listener);
@@ -158,14 +116,10 @@ public class Empfangen extends JFrame {
     private JToolBar symbolleiste() {
         JToolBar leiste = new JToolBar();
         // die Symbole über die Aktionen einbauen
-
-
         leiste.add(homeBtn);
         leiste.add(syncBtn);
         leiste.add(antwortenBtn);
         leiste.add(weiterleitenBtn);
-
-
         // die Leiste zurückgeben
         return leiste;
     }

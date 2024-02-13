@@ -8,8 +8,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -25,6 +25,46 @@ public class Senden extends JFrame {
     private DefaultTableModel modell;
     //    private MeineAktionen homeAct;
     private FontIcon sendenIcon, homeIcon;
+    class MausListener implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if (e.getClickCount() == 2) {
+                //die Zeile beschaffen
+                int zeile = tabelle.getSelectedRow();
+                //die Daten beschaffen
+                String empfaenger, betreff, inhalt, ID;
+                ID = tabelle.getModel().getValueAt(zeile, 0).toString();
+                empfaenger = tabelle.getModel().getValueAt(zeile, 1).toString();
+                betreff = tabelle.getModel().getValueAt(zeile, 2).toString();
+                inhalt = tabelle.getModel().getValueAt(zeile, 3).toString();
+                //und anzeigen
+                //übergeben wird der Frame der äußeren Klasse
+                new Anzeige(Senden.this, true, ID, empfaenger, betreff, inhalt, false);
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
+    }
+
 
     class MeinSendenListener implements ActionListener {
 
@@ -37,25 +77,7 @@ public class Senden extends JFrame {
             }
         }
     }
-//    class MeineAktionen extends AbstractAction {
-//        public MeineAktionen(String text, FontIcon icon, String beschreibung, KeyStroke shortcut, String actionText) {
-//            super(text, icon);
-//
-//            putValue(SHORT_DESCRIPTION, beschreibung);
-//            putValue(ACCELERATOR_KEY, shortcut);
-//            putValue(ACTION_COMMAND_KEY, actionText);
-//        }
-//
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
-//
-//            if (e.getActionCommand().equals("senden"))
-//                senden();
-//            if (e.getActionCommand().equals("home"))
-//                nachHause();
-//
-//        }
-//    }
+
 
     private void nachHause() {
         dispose();
@@ -132,24 +154,9 @@ public class Senden extends JFrame {
         add(scroll);
 
         //einen Maus-Listener ergänzen
-        tabelle.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                //war es ein Doppelklick?
-                if (e.getClickCount() == 2) {
-                    //die Zeile beschaffen
-                    int zeile = tabelle.getSelectedRow();
-                    //die Daten beschaffen
-                    String empfaenger, betreff, inhalt, ID;
-                    ID = tabelle.getModel().getValueAt(zeile, 0).toString();
-                    empfaenger = tabelle.getModel().getValueAt(zeile, 1).toString();
-                    betreff = tabelle.getModel().getValueAt(zeile, 2).toString();
-                    inhalt = tabelle.getModel().getValueAt(zeile, 3).toString();
-                    //und anzeigen
-                    //übergeben wird der Frame der äußeren Klasse
-                    new Anzeige(Senden.this, true, ID, empfaenger, betreff, inhalt, false);
-                }
-            }
-        });
+        MausListener listener = new MausListener();
+        tabelle.addMouseListener(listener);
+
     }
 
     private void tabelleAktualisieren() {
@@ -193,8 +200,6 @@ public class Senden extends JFrame {
     private JToolBar symbolleiste() {
         JToolBar leiste = new JToolBar();
         //die Symbole über die Aktionen einbauen
-//        leiste.add(homeAct);
-//        leiste.add(sendenAct);
         leiste.add(backToMenuBtn);
         leiste.add(emailVerfassenBtn);
         //die Leiste zurückgeben

@@ -36,11 +36,7 @@ public class NeueNachricht extends JDialog {
                 case "senden" -> senden();
                 case "abbrechen" -> dispose();
             }
-
-
         }
-
-
     }
 
 
@@ -75,7 +71,6 @@ public class NeueNachricht extends JDialog {
         Session sitzung = verbindungHerstellen();
         nachrichtVerschicken(sitzung);
         nachrichtSpeichern();
-
     }
 
     // --------- DATABASE RELATED ------ //
@@ -127,7 +122,6 @@ public class NeueNachricht extends JDialog {
 
         //der Server
         String server = Constants.getSmtpServer();
-
         //die Eigenschaften setzen
         Properties eigenschaften = new Properties();
         //die Authentifizierung über TLS
@@ -137,9 +131,7 @@ public class NeueNachricht extends JDialog {
         eigenschaften.put("mail.smtp.host", server);
         //der Port zum Versenden
         eigenschaften.put("mail.smtp.port", "587");
-
         // das Session-Objekt erstellen
-
         return Session.getInstance(eigenschaften, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(benutzername, passwort);
@@ -154,15 +146,12 @@ public class NeueNachricht extends JDialog {
         // Panel for input fields
         JPanel oben = createInputPanel(null, null);
         add(oben, BorderLayout.NORTH);
-
         // Text area for email content
         JScrollPane scroll = createContentTextArea(null);
         add(scroll);
-
         // Panel for buttons
         JPanel unten = createButtonPanel();
         add(unten, BorderLayout.SOUTH);
-
         // Set frame properties
         setSize(600, 300);
         setVisible(true);
@@ -170,19 +159,15 @@ public class NeueNachricht extends JDialog {
 
     private void initGui(String betreffTxt, String empfaengerTxt, String inhaltTxt) {
         setLayout(new BorderLayout());
-
         // Panel for input fields
         JPanel oben = createInputPanel(betreffTxt, empfaengerTxt);
         add(oben, BorderLayout.NORTH);
-
         // Text area for email content
         JScrollPane scroll = createContentTextArea(inhaltTxt);
         add(scroll);
-
         // Panel for buttons
         JPanel unten = createButtonPanel();
         add(unten, BorderLayout.SOUTH);
-
         // Set frame properties
         setSize(600, 300);
         setVisible(true);
@@ -191,7 +176,6 @@ public class NeueNachricht extends JDialog {
     private JPanel createInputPanel(String betreffTxtFeld, String empfaengerTxtFeld) {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(0, 2));
-
 
         panel.add(new JLabel("Empfänger:"));
         empfaenger = new JTextField();
@@ -223,7 +207,6 @@ public class NeueNachricht extends JDialog {
         JPanel panel = new JPanel();
         NeuListener listener = new NeuListener();
         // Buttons
-
         JButton sendEmailBtn = createButton(SEND, "senden", listener, "E-Mail absenden");
         JButton abbrechen = createButton(CANCEL, "abbrechen", listener, "Abbrechen und Fenster schließen");
         panel.add(sendEmailBtn);

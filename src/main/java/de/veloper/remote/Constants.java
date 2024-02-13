@@ -4,7 +4,7 @@ public class Constants {
     // Die Konstanten für die Anmeldedaten
     private static String BENUTZERNAME;
     private static String PASSWORT;
-    private static String SMTP_SERVER = "smtp-mail.outlook.com";
+    private static final String SMTP_SERVER = "smtp-mail.outlook.com";
 
     private static String SMTP_PORT = "587";
 

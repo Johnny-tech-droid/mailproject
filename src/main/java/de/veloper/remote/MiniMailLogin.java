@@ -42,13 +42,9 @@ public class MiniMailLogin extends JDialog {
 
         JPanel inputPanel = createInputPanel();
 
-
         add(inputPanel, BorderLayout.CENTER);
         createLoginButton();
-
-
         add(loginBtn, BorderLayout.SOUTH);
-
         setTitle("MiniMail Login");
         setSize(300, 150);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -67,7 +63,6 @@ public class MiniMailLogin extends JDialog {
         JPanel inputPanel = new JPanel();
         FlowLayout flowLayout = new FlowLayout();
         flowLayout.setHgap(10);
-
 
         JLabel benutzerLabel = new JLabel("Benutzer:");
         benutzerFeld = new JTextField();
@@ -93,10 +88,8 @@ public class MiniMailLogin extends JDialog {
      */
     public boolean authenticate() {
         setSmtpProperties();
-
         // Verbindung zum E-Mail-Server für die Authentifizierung der eingegebenen Nutzerdaten
         // angepasst für die Verbindung mit Outlook.com
-
         Session session = Session.getInstance(smtpProperties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -112,8 +105,6 @@ public class MiniMailLogin extends JDialog {
             System.err.println("ERROR");
             return false;
         }
-
-
     }
 
     /**
@@ -156,7 +147,6 @@ public class MiniMailLogin extends JDialog {
     private void createLoginButton() {
         loginBtn = createButton(LOGIN, "Jetzt einloggen");
         loginBtn.addActionListener(e -> checkForAuthentication());
-
     }
 
     private void checkForAuthentication() {
@@ -165,12 +155,8 @@ public class MiniMailLogin extends JDialog {
             Constants.setBENUTZERNAME(benutzerFeld.getText());
             Constants.setPASSWORT(new String(passwortFeld.getPassword()));
             dispose();
-
         } else {
             System.err.println("FAILURE");
-
         }
-
-
     }
 }

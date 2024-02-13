@@ -17,27 +17,32 @@ public class MiniMailStart extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getActionCommand().equals("senden"))
-                senden();
-            if (e.getActionCommand().equals("empfangen"))
-                empfangen();
-            if (e.getActionCommand().equals("ende"))
-                beenden();
+
+            switch(e.getActionCommand()) {
+                case "senden" -> senden();
+                case "empfangen" -> empfangen();
+                case "beenden" -> beenden();
+            }
         }
     }
 
     public MiniMailStart(String title) throws HeadlessException {
         super(title);
 
-
-
-
         MeinListener listener = new MeinListener();
-        JButton postausgang = createButton(EMAIL_SEND_OUTLINE, "senden", listener, "Öffnet den Posteingang und synchronisiert diesen.", "Gesendete E-Mails");
-        JButton posteingang = createButton(EMAIL_RECEIVE_OUTLINE, "empfangen", listener, "Öffnet die gesendeten E-Mails.", "Empfangene E-Mails");
-        JButton ausloggen = createButton(LOG_OUT, "ende", listener, "User ausloggen und Programm beenden.", "Programm beenden");
 
-
+        JButton postausgang = createButton(EMAIL_SEND_OUTLINE,
+                "senden", listener,
+                "Öffnet den Posteingang und synchronisiert diesen.",
+                "Gesendete E-Mails");
+        JButton posteingang = createButton(EMAIL_RECEIVE_OUTLINE,
+                "empfangen", listener,
+                "Öffnet die gesendeten E-Mails.",
+                "Empfangene E-Mails");
+        JButton ausloggen = createButton(LOG_OUT,
+                "ende", listener,
+                "User ausloggen und Programm beenden.",
+                "Programm beenden");
 
         add(posteingang);
         add(postausgang);
@@ -49,17 +54,6 @@ public class MiniMailStart extends JFrame {
 
     }
 
-    private void senden() {
-        new Senden();
-    }
-
-    private void empfangen() {
-        new Empfangen();
-    }
-
-    private void beenden() {
-        System.exit(0);
-    }
 
     private JButton createButton(Ikon iconEnum, String actionCommand, ActionListener actionListener, String toolTipText, String text) {
         JButton tempButton = new JButton();
@@ -79,5 +73,17 @@ public class MiniMailStart extends JFrame {
         tempIcon.setIconSize(25);
 
         return tempIcon;
+    }
+
+    private void senden() {
+        new Senden();
+    }
+
+    private void empfangen() {
+        new Empfangen();
+    }
+
+    private void beenden() {
+        System.exit(0);
     }
 }
