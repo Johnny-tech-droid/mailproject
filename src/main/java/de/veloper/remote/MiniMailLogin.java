@@ -38,30 +38,15 @@ public class MiniMailLogin extends JDialog {
      * Initialisiert die grafische Benutzeroberfläche des Login-Fensters.
      */
     private void initGui() {
-        setLayout(new BorderLayout());
+
 
         JPanel inputPanel = createInputPanel();
+
+
         add(inputPanel, BorderLayout.CENTER);
         createLoginButton();
 
 
-//        JButton loginBtn = createButton(LOGIN, "Jetzt einloggen");
-//
-//
-//
-//
-//
-//        loginBtn.addActionListener(e -> {
-//            if (authenticate()) {
-//                new MiniMailStart("MiniMail Start");
-//                Constants.setBENUTZERNAME(benutzerFeld.getText());
-//                Constants.setPASSWORT(new String(passwortFeld.getPassword()));
-//                dispose();
-//            }
-//            else {
-//                System.err.println("FAILURE");
-//            }
-//        });
         add(loginBtn, BorderLayout.SOUTH);
 
         setTitle("MiniMail Login");
@@ -79,13 +64,19 @@ public class MiniMailLogin extends JDialog {
      * @return Das erstellte Panel.
      */
     private JPanel createInputPanel() {
-        JPanel inputPanel = new JPanel(new GridLayout(2, 2));
+        JPanel inputPanel = new JPanel();
+        FlowLayout flowLayout = new FlowLayout();
+        flowLayout.setHgap(10);
+
 
         JLabel benutzerLabel = new JLabel("Benutzer:");
         benutzerFeld = new JTextField();
+        benutzerFeld.setColumns(20);
+        benutzerFeld.setLayout(flowLayout);
 
         JLabel passwortLabel = new JLabel("Passwort:");
         passwortFeld = new JPasswordField();
+        passwortFeld.setColumns(20);
 
         inputPanel.add(benutzerLabel);
         inputPanel.add(benutzerFeld);
@@ -152,7 +143,7 @@ public class MiniMailLogin extends JDialog {
         return properties;
     }
 
-    private JButton createButton(Ikon iconEnum,  String tooltiptext) {
+    private JButton createButton(Ikon iconEnum, String tooltiptext) {
         JButton tempButton = new JButton();
         FontIcon tempIcon = new FontIcon();
         tempIcon.setIkon(iconEnum);
@@ -163,21 +154,11 @@ public class MiniMailLogin extends JDialog {
     }
 
     private void createLoginButton() {
-        loginBtn = createButton(LOGIN,"Jetzt einloggen");
-
-
+        loginBtn = createButton(LOGIN, "Jetzt einloggen");
         loginBtn.addActionListener(e -> checkForAuthentication());
-//        {
-//            if (authenticate()) {
-//                new MiniMailStart("MiniMail Start");
-//                Constants.setBENUTZERNAME(benutzerFeld.getText());
-//                Constants.setPASSWORT(new String(passwortFeld.getPassword()));
-//                dispose();
-//            } else {
-//                System.err.println("FAILURE");
-//            }
-//        });
+
     }
+
     private void checkForAuthentication() {
         if (authenticate()) {
             new MiniMailStart("MiniMail Start");

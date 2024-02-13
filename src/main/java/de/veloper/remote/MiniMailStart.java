@@ -28,21 +28,9 @@ public class MiniMailStart extends JFrame {
 
     public MiniMailStart(String title) throws HeadlessException {
         super(title);
-        setLayout(new FlowLayout(FlowLayout.LEFT));
 
-//        JButton liste = new JButton("Senden");
-//        JButton einzel = new JButton("Empfangen");
-//        JButton beenden = new JButton("Beenden");
-//
 
-//
-//        liste.setActionCommand("senden");
-//        einzel.setActionCommand("empfangen");
-//        beenden.setActionCommand("ende");
-//
-//        liste.addActionListener(listener);
-//        einzel.addActionListener(listener);
-//        beenden.addActionListener(listener);
+
 
         MeinListener listener = new MeinListener();
         JButton postausgang = createButton(EMAIL_SEND_OUTLINE, "senden", listener, "Öffnet den Posteingang und synchronisiert diesen.", "Gesendete E-Mails");
@@ -50,9 +38,6 @@ public class MiniMailStart extends JFrame {
         JButton ausloggen = createButton(LOG_OUT, "ende", listener, "User ausloggen und Programm beenden.", "Programm beenden");
 
 
-//        add(liste);
-//        add(einzel);
-//        add(beenden);
 
         add(posteingang);
         add(postausgang);
