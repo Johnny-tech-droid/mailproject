@@ -1,6 +1,8 @@
 package de.veloper.remote;
 
 import jakarta.mail.*;
+import org.kordamp.ikonli.Ikon;
+import org.kordamp.ikonli.swing.FontIcon;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -9,6 +11,11 @@ import java.awt.event.*;
 import java.sql.*;
 import java.util.Properties;
 
+import static org.kordamp.ikonli.material2.Material2OutlinedAL.FORWARD_TO_INBOX;
+import static org.kordamp.ikonli.material2.Material2OutlinedMZ.REPLY;
+import static org.kordamp.ikonli.materialdesign2.MaterialDesignD.DATABASE_SYNC_OUTLINE;
+import static org.kordamp.ikonli.materialdesign2.MaterialDesignH.HOME_OUTLINE;
+
 
 /**
  * Diese Klasse repräsentiert ein Fenster zum Empfangen von E-Mails.
@@ -16,10 +23,13 @@ import java.util.Properties;
 public class Empfangen extends JFrame {
     private JTable tabelle;
     private DefaultTableModel modell;
-    private final MeineAktionen antwortenAct;
-    private final MeineAktionen weiterleitenAct;
-    private final MeineAktionen homeAct;
-    private final MeineAktionen syncAct;
+
+
+    //    private final MeineAktionen antwortenAct;
+//    private final MeineAktionen weiterleitenAct;
+//    private final MeineAktionen homeAct;
+//    private final MeineAktionen syncAct;
+    private JButton antwortenBtn, weiterleitenBtn, syncBtn, homeBtn;
 
     /**
      * Benutzername und Kennwort sollen nicht mehr fest im Code hinterlegt werden,
@@ -28,6 +38,7 @@ public class Empfangen extends JFrame {
      */
     private final String benutzername = Constants.getBENUTZERNAME();
     private final String passwort = Constants.getPASSWORT();
+
 
     /**
      * Ein WindowAdapter für das Empfangen von Nachrichten beim Öffnen des Fensters.
@@ -39,40 +50,28 @@ public class Empfangen extends JFrame {
         }
     }
 
-    /**
-     * Eine benutzerdefinierte Aktion für die Toolbar-Buttons.
-     */
-    class MeineAktionen extends AbstractAction {
-        public MeineAktionen(String text, ImageIcon icon, String beschreibung, KeyStroke shortcut, String actionText) {
-            super(text, icon);
-
-            putValue(SHORT_DESCRIPTION, beschreibung);
-            putValue(ACCELERATOR_KEY, shortcut);
-            putValue(ACTION_COMMAND_KEY, actionText);
-
-        }
+    class MeinListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getActionCommand().equals("antworten"))
-                antworten();
-            if (e.getActionCommand().equals("weiterleiten"))
-                weiterleiten();
-            if (e.getActionCommand().equals("home"))
-                nachHause();
-            if (e.getActionCommand().equals("syncMailbox"))
-                synchronisieren();
+            switch (e.getActionCommand()) {
+                case "antworten" -> antworten();
+                case "syncMailbox" -> synchronisieren();
+                case "home" -> dispose();
+                case "weiterleiten" -> weiterleiten();
+            }
+
+
         }
     }
+
 
     private void synchronisieren() {
         nachrichtenEmpfangen();
 
     }
 
-    private void nachHause() {
-        dispose();
-    }
+
 
     /**
      * Konstruktor für das Empfangen-Fenster.
@@ -81,19 +80,43 @@ public class Empfangen extends JFrame {
         super();
         setTitle("E-Mail empfangen");
         setLayout(new BorderLayout());
-        // neue Buttons, gleiches Muster wie bei Senden.java Actions
-        antwortenAct = new MeineAktionen("Antworten",
-                new ImageIcon("src/main/resources/icons/reply_icon_half.png"),
-                "Antwortet auf die ausgewählte E-Mail",
-                null,
-                "antworten");
-        weiterleitenAct = new MeineAktionen("Weiterleiten",
-                new ImageIcon("src/main/resources/icons/forward_icon_half.png"),
-                "Leitet die ausgewählte E-Mail weiter",
-                null,
-                "weiterleiten");
-        homeAct = new MeineAktionen("Hauptmenü", new ImageIcon("src/main/resources/icons/home_icon.png"), "Zurück zum Hauptmenü", null, "home");
-        syncAct = new MeineAktionen("Sync", new ImageIcon("src/main/resources/icons/syncbox_icon_half.png"), "Synchronisiert den Posteingang", null, "syncMailbox");
+
+//        FontIcon antwortenIcon = createFontIcon(REPLY);
+//        FontIcon weiterleitenIcon = createFontIcon(FORWARD_TO_INBOX);
+//        FontIcon homeIcon = createFontIcon(HOME_OUTLINE);
+//        FontIcon syncIcon = createFontIcon(EMAIL_SYNC_OUTLINE);
+
+//
+//        // neue Buttons, gleiches Muster wie bei Senden.java Actions
+//        antwortenAct = new MeineAktionen("Antworten",
+//                antwortenIcon,
+//                "Antwortet auf die ausgewählte E-Mail",
+//                null,
+//                "antworten");
+//
+//        weiterleitenAct = new MeineAktionen("Weiterleiten",
+//                weiterleitenIcon,
+//                "Leitet die ausgewählte E-Mail weiter",
+//                null,
+//                "weiterleiten");
+//        homeAct = new MeineAktionen("Hauptmenü",
+//                homeIcon,
+//                "Zurück zum Hauptmenü",
+//                null,
+//                "home");
+//        syncAct = new MeineAktionen("Sync",
+//                syncIcon,
+//                "Synchronisiert den Posteingang",
+//                null,
+//                "syncMailbox");
+
+        MeinListener listener = new MeinListener();
+        antwortenBtn = createButton(REPLY, "Antwortet auf die ausgewählte E-Mail.", "antworten", listener);
+        weiterleitenBtn = createButton(FORWARD_TO_INBOX, "Leitet die ausgewählte E-Mail weiter.", "weiterleiten", listener);
+        homeBtn = createButton(HOME_OUTLINE, "Zurück zum Hauptmenü.", "home", listener);
+        syncBtn = createButton(DATABASE_SYNC_OUTLINE, "Posteingang synchronisieren.", "syncMailbox", listener);
+
+
         add(symbolleiste(), BorderLayout.NORTH);
         setVisible(true);
         setSize(700, 300);
@@ -102,6 +125,28 @@ public class Empfangen extends JFrame {
         addWindowListener(new MeinWindowAdapter());
         tabelleErstellen();
         tabelleAktualisieren();
+    }
+
+    private FontIcon createFontIcon(Ikon name) {
+        FontIcon tempIcon = new FontIcon();
+        tempIcon.setIkon(name);
+        tempIcon.setIconSize(25);
+
+        return tempIcon;
+    }
+
+    private JButton createButton(Ikon name, String beschreibung, String actionCommand, ActionListener listener) {
+        JButton tempButton = new JButton();
+        FontIcon fontIcon = createFontIcon(name);
+        tempButton.setIcon(fontIcon);
+
+        tempButton.setToolTipText(beschreibung);
+        tempButton.addActionListener(listener);
+        tempButton.setActionCommand(actionCommand);
+        tempButton.setBorderPainted(false);
+
+
+        return tempButton;
     }
 
 
@@ -113,11 +158,13 @@ public class Empfangen extends JFrame {
     private JToolBar symbolleiste() {
         JToolBar leiste = new JToolBar();
         // die Symbole über die Aktionen einbauen
-        leiste.add(homeAct);
-        leiste.add(antwortenAct);
-        leiste.add(weiterleitenAct);
 
-        leiste.add(syncAct);
+
+        leiste.add(homeBtn);
+        leiste.add(syncBtn);
+        leiste.add(antwortenBtn);
+        leiste.add(weiterleitenBtn);
+
 
         // die Leiste zurückgeben
         return leiste;
@@ -126,7 +173,7 @@ public class Empfangen extends JFrame {
     /**
      * Aktualisiert die Tabelle mit den empfangenen E-Mails.
      */
-    private void tabelleAktualisieren() {
+    public void tabelleAktualisieren() {
         Connection verbindung;
         ResultSet ergebnisMenge;
         String sender, betreff, inhalt, ID;
@@ -179,7 +226,7 @@ public class Empfangen extends JFrame {
                     sender = tabelle.getModel().getValueAt(zeile, 1).toString();
                     betreff = tabelle.getModel().getValueAt(zeile, 2).toString();
                     inhalt = tabelle.getModel().getValueAt(zeile, 3).toString();
-                    new Anzeige(Empfangen.this, true, ID, sender, betreff, inhalt);
+                    new Anzeige(Empfangen.this, true, ID, sender, betreff, inhalt, true);
                 }
             }
         });
@@ -319,12 +366,13 @@ public class Empfangen extends JFrame {
     // AUFGABE 2 EINSENDEAUFGABE JAVA17D
     // antworten und weiterleiten Methoden sind abgewandelt von tabelleErstellen() für das Anzeigen
     // einer empfangenen Nachricht
+
     /**
      * Antwortet auf die ausgewählte Nachricht. Ruft ein neues Fenster für eine neue Nachricht auf,
      * füllt automatisch den Empfänger, den Betreff und den Inhalt mit den entsprechenden Werten der
      * ausgewählten Nachricht. Aktualisiert anschließend die Tabelle.
      */
-    private void antworten() {
+    public void antworten() {
         int selectedRow = tabelle.getSelectedRow();
         if (selectedRow >= 0) {
             String empfaenger = tabelle.getModel().getValueAt(selectedRow, 1).toString();
@@ -343,7 +391,7 @@ public class Empfangen extends JFrame {
      * füllt automatisch den Betreff und den Inhalt mit den entsprechenden Werten der
      * ausgewählten Nachricht. Aktualisiert anschließend die Tabelle.
      */
-    private void weiterleiten() {
+    public void weiterleiten() {
         int selectedRow = tabelle.getSelectedRow();
         if (selectedRow >= 0) {
 
@@ -356,4 +404,5 @@ public class Empfangen extends JFrame {
             JOptionPane.showMessageDialog(this, "Eine Nachricht anklicken für weiterleiten.");
         }
     }
+
 }

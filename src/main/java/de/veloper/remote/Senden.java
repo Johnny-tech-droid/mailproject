@@ -1,37 +1,64 @@
 package de.veloper.remote;
 
+import org.kordamp.ikonli.Ikon;
+import org.kordamp.ikonli.swing.FontIcon;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
+import static org.kordamp.ikonli.materialdesign2.MaterialDesignE.EMAIL_EDIT_OUTLINE;
+import static org.kordamp.ikonli.materialdesign2.MaterialDesignH.HOME_OUTLINE;
+
 public class Senden extends JFrame {
-    private MeineAktionen sendenAct;
+    //    private MeineAktionen sendenAct;
+    private JButton emailVerfassenBtn, backToMenuBtn;
+
     private JTable tabelle;
     private DefaultTableModel modell;
+    //    private MeineAktionen homeAct;
+    private FontIcon sendenIcon, homeIcon;
 
-
-    class MeineAktionen extends AbstractAction {
-        public MeineAktionen(String text, ImageIcon icon, String beschreibung, KeyStroke shortcut, String actionText) {
-            super(text, icon);
-
-            putValue(SHORT_DESCRIPTION, beschreibung);
-            putValue(ACCELERATOR_KEY, shortcut);
-            putValue(ACTION_COMMAND_KEY, actionText);
-        }
+    class MeinSendenListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            if (e.getActionCommand().equals("senden"))
-                senden();
-
+            switch (e.getActionCommand()) {
+                case "senden" -> senden();
+                case "home" -> dispose();
+            }
         }
+    }
+//    class MeineAktionen extends AbstractAction {
+//        public MeineAktionen(String text, FontIcon icon, String beschreibung, KeyStroke shortcut, String actionText) {
+//            super(text, icon);
+//
+//            putValue(SHORT_DESCRIPTION, beschreibung);
+//            putValue(ACCELERATOR_KEY, shortcut);
+//            putValue(ACTION_COMMAND_KEY, actionText);
+//        }
+//
+//        @Override
+//        public void actionPerformed(ActionEvent e) {
+//
+//            if (e.getActionCommand().equals("senden"))
+//                senden();
+//            if (e.getActionCommand().equals("home"))
+//                nachHause();
+//
+//        }
+//    }
+
+    private void nachHause() {
+        dispose();
     }
 
     private void senden() {
@@ -42,26 +69,44 @@ public class Senden extends JFrame {
     }
 
 
-
     public Senden() {
         super();
         setTitle("E-Mail senden");
         setLayout(new BorderLayout());
-        sendenAct = new MeineAktionen("Neue E-Mail",
-                new ImageIcon("src/main/resources/icons/create_icon_half.png"),
-                "Erstellt eine neue E-Mail",
-                null,
-                "senden");
+        MeinSendenListener listener = new MeinSendenListener();
+
+
+        emailVerfassenBtn = createButton(EMAIL_EDIT_OUTLINE, "senden", listener, "Erstellt eine neue E-Mail.");
+        backToMenuBtn = createButton(HOME_OUTLINE, "home", listener, "Zurück zum Hauptmenü.");
 
         add(symbolleiste(), BorderLayout.NORTH);
         setVisible(true);
-        setSize(700,300);
+        setSize(700, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         tabelleErstellen();
         tabelleAktualisieren();
     }
 
+
+    private JButton createButton(Ikon name, String actionCommand, ActionListener actionListener, String tooltipText) {
+        FontIcon fontIcon = createFontIcon(name);
+        JButton tempButton = new JButton();
+        tempButton.setIcon(fontIcon);
+        tempButton.setActionCommand(actionCommand);
+        tempButton.addActionListener(actionListener);
+        tempButton.setToolTipText(tooltipText);
+        tempButton.setBorderPainted(false);
+        return tempButton;
+    }
+
+    private FontIcon createFontIcon(Ikon name) {
+        FontIcon tempIcon = new FontIcon();
+        tempIcon.setIkon(name);
+        tempIcon.setIconSize(25);
+
+        return tempIcon;
+    }
 
     private void tabelleErstellen() {
         //für die Spaltenbezeichner
@@ -101,11 +146,12 @@ public class Senden extends JFrame {
                     inhalt = tabelle.getModel().getValueAt(zeile, 3).toString();
                     //und anzeigen
                     //übergeben wird der Frame der äußeren Klasse
-                    new Anzeige(Senden.this, true, ID, empfaenger, betreff, inhalt);
+                    new Anzeige(Senden.this, true, ID, empfaenger, betreff, inhalt, false);
                 }
             }
         });
     }
+
     private void tabelleAktualisieren() {
         //für den Datenbankzugriff
         Connection verbindung;
@@ -116,7 +162,7 @@ public class Senden extends JFrame {
         //die Inhalte löschen
         modell.setRowCount(0);
 
-        try{
+        try {
             //Verbindung herstellen und Ergebnismenge beschaffen
             verbindung = MiniDBTools.oeffnenDB(Constants.getDB_URL());
             ergebnisMenge = MiniDBTools.liefereErgebnis(verbindung, "SELECT * FROM gesendet");
@@ -132,24 +178,25 @@ public class Senden extends JFrame {
 
                 //die Zeile zum Modell hinzufügen
                 //dazu benutzen wir ein Array vom Typ Object
-                modell.addRow(new Object[] {ID, empfaenger, betreff, inhalt} );
+                modell.addRow(new Object[]{ID, empfaenger, betreff, inhalt});
             }
             //die Verbindungen wieder schließen und trennen
             ergebnisMenge.close();
             verbindung.close();
             MiniDBTools.schliessenDB(Constants.getDB_URL());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Problem: \n" + e.toString());
         }
     }
 
 
-
     private JToolBar symbolleiste() {
         JToolBar leiste = new JToolBar();
         //die Symbole über die Aktionen einbauen
-        leiste.add(sendenAct);
+//        leiste.add(homeAct);
+//        leiste.add(sendenAct);
+        leiste.add(backToMenuBtn);
+        leiste.add(emailVerfassenBtn);
         //die Leiste zurückgeben
         return (leiste);
     }

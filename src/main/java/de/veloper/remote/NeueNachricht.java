@@ -3,6 +3,8 @@ package de.veloper.remote;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import org.kordamp.ikonli.Ikon;
+import org.kordamp.ikonli.swing.FontIcon;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +14,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
+
+import static org.kordamp.ikonli.material2.Material2OutlinedAL.CANCEL;
+import static org.kordamp.ikonli.material2.Material2OutlinedMZ.SEND;
 
 public class NeueNachricht extends JDialog {
     // die Eingabefelder
@@ -26,13 +31,19 @@ public class NeueNachricht extends JDialog {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getActionCommand().equals("senden"))
-                senden();
-            if (e.getActionCommand().equals("abbrechen"))
-                dispose();
+
+            switch (e.getActionCommand()) {
+                case "senden" -> senden();
+                case "abbrechen" -> dispose();
+            }
+
 
         }
+
+
     }
+
+
     // ------ KONSTRUKTOR ------ //
     // für allgemeine neue Nachricht verfassen
     public NeueNachricht(JFrame parent, boolean modal) {
@@ -41,6 +52,7 @@ public class NeueNachricht extends JDialog {
         initGui();
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
     }
+
     // für Nachricht weiterleiten
     public NeueNachricht(JFrame parent, boolean modal, String betreff, String inhalt) {
         super(parent, modal);
@@ -48,6 +60,7 @@ public class NeueNachricht extends JDialog {
         initGui(betreff, null, inhalt);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
     }
+
     // für Nachricht beantworten
     public NeueNachricht(JFrame parent, boolean modal, String empfaenger, String betreff, String inhalt) {
         super(parent, modal);
@@ -90,6 +103,7 @@ public class NeueNachricht extends JDialog {
             JOptionPane.showMessageDialog(this, "Problem: \n" + e);
         }
     }
+
     // ------- EMAIL SERVER RELATED -------- //
     private void nachrichtVerschicken(Session sitzung) {
         String absender = benutzername;
@@ -138,7 +152,7 @@ public class NeueNachricht extends JDialog {
         setLayout(new BorderLayout());
 
         // Panel for input fields
-        JPanel oben = createInputPanel(null,null);
+        JPanel oben = createInputPanel(null, null);
         add(oben, BorderLayout.NORTH);
 
         // Text area for email content
@@ -153,11 +167,12 @@ public class NeueNachricht extends JDialog {
         setSize(600, 300);
         setVisible(true);
     }
+
     private void initGui(String betreffTxt, String empfaengerTxt, String inhaltTxt) {
         setLayout(new BorderLayout());
 
         // Panel for input fields
-        JPanel oben = createInputPanel(betreffTxt,empfaengerTxt);
+        JPanel oben = createInputPanel(betreffTxt, empfaengerTxt);
         add(oben, BorderLayout.NORTH);
 
         // Text area for email content
@@ -177,6 +192,7 @@ public class NeueNachricht extends JDialog {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(0, 2));
 
+
         panel.add(new JLabel("Empfänger:"));
         empfaenger = new JTextField();
         empfaenger.setText(empfaengerTxtFeld);
@@ -189,6 +205,7 @@ public class NeueNachricht extends JDialog {
 
         return panel;
     }
+
 
     private JScrollPane createContentTextArea(String content) {
         inhalt = new JTextArea();
@@ -204,25 +221,27 @@ public class NeueNachricht extends JDialog {
 
     private JPanel createButtonPanel() {
         JPanel panel = new JPanel();
-
-        // Buttons
-        JButton ok = new JButton();
-        ok.setToolTipText("Nachricht absenden");
-        ok.setIcon(new ImageIcon("src/main/resources/send_icon_half.png"));
-        ok.setActionCommand("senden");
-        JButton abbrechen = new JButton("Abbrechen");
-        abbrechen.setActionCommand("abbrechen");
-
-
-        // ActionListener
         NeuListener listener = new NeuListener();
-        ok.addActionListener(listener);
-        abbrechen.addActionListener(listener);
+        // Buttons
 
-        panel.add(ok);
+        JButton sendEmailBtn = createButton(SEND, "senden", listener, "E-Mail absenden");
+        JButton abbrechen = createButton(CANCEL, "abbrechen", listener, "Abbrechen und Fenster schließen");
+        panel.add(sendEmailBtn);
         panel.add(abbrechen);
 
         return panel;
+    }
+
+    private JButton createButton(Ikon iconEnum, String actionCommand, NeuListener actionListener, String toolTipText) {
+        JButton tempButton = new JButton();
+        FontIcon tempIcon = new FontIcon();
+        tempIcon.setIconSize(25);
+        tempIcon.setIkon(iconEnum);
+        tempButton.setIcon(tempIcon);
+        tempButton.setActionCommand(actionCommand);
+        tempButton.addActionListener(actionListener);
+        tempButton.setToolTipText(toolTipText);
+        return tempButton;
     }
 
 }

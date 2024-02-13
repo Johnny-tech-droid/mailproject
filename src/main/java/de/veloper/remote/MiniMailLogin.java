@@ -1,10 +1,16 @@
 package de.veloper.remote;
 
 import jakarta.mail.*;
+import org.kordamp.ikonli.Ikon;
+import org.kordamp.ikonli.swing.FontIcon;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Properties;
+
+import static org.kordamp.ikonli.material2.Material2OutlinedAL.LOGIN;
+
+
 /**
  * Diese Klasse repräsentiert das Login-Fenster der MiniMail-Anwendung.
  */
@@ -12,6 +18,7 @@ import java.util.Properties;
 public class MiniMailLogin extends JDialog {
     // die Variablen für die Logindaten
     private JTextField benutzerFeld;
+    private JButton loginBtn;
     private JPasswordField passwortFeld;
     // die eigenschaften für die Verbindung mit dem Server
     private Properties smtpProperties;
@@ -26,6 +33,7 @@ public class MiniMailLogin extends JDialog {
         Constants.setPASSWORT(new String(passwortFeld.getPassword()));
 
     }
+
     /**
      * Initialisiert die grafische Benutzeroberfläche des Login-Fensters.
      */
@@ -34,31 +42,40 @@ public class MiniMailLogin extends JDialog {
 
         JPanel inputPanel = createInputPanel();
         add(inputPanel, BorderLayout.CENTER);
+        createLoginButton();
 
-        JButton loginBtn = new JButton("Login");
-        loginBtn.addActionListener(e -> {
-            if (authenticate()) {
-                new MiniMailStart("MiniMail Start");
-                Constants.setBENUTZERNAME(benutzerFeld.getText());
-                Constants.setPASSWORT(new String(passwortFeld.getPassword()));
-                dispose();
-            }
-            else {
-                System.err.println("FAILURE");
-            }
-        });
+
+//        JButton loginBtn = createButton(LOGIN, "Jetzt einloggen");
+//
+//
+//
+//
+//
+//        loginBtn.addActionListener(e -> {
+//            if (authenticate()) {
+//                new MiniMailStart("MiniMail Start");
+//                Constants.setBENUTZERNAME(benutzerFeld.getText());
+//                Constants.setPASSWORT(new String(passwortFeld.getPassword()));
+//                dispose();
+//            }
+//            else {
+//                System.err.println("FAILURE");
+//            }
+//        });
         add(loginBtn, BorderLayout.SOUTH);
 
         setTitle("MiniMail Login");
-        setSize(300,150);
+        setSize(300, 150);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
 
 
     }
+
     /**
      * Erstellt das Panel für die Benutzereingabe.
+     *
      * @return Das erstellte Panel.
      */
     private JPanel createInputPanel() {
@@ -77,8 +94,10 @@ public class MiniMailLogin extends JDialog {
 
         return inputPanel;
     }
+
     /**
      * Authentifiziert den Benutzer über die SMTP-Verbindung.
+     *
      * @return True, wenn die Authentifizierung erfolgreich ist, sonst False.
      */
     public boolean authenticate() {
@@ -105,6 +124,7 @@ public class MiniMailLogin extends JDialog {
 
 
     }
+
     /**
      * Setzt die SMTP-Verbindungseigenschaften.
      */
@@ -114,11 +134,12 @@ public class MiniMailLogin extends JDialog {
         String smtpPort = Constants.getSmtpPort();
         smtpProperties = createProperties(smtpServer, smtpPort, "mail.smtp");
     }
+
     /**
      * Erstellt die Eigenschaften für die Verbindung.
-
-     * @param host Hostname des Servers.
-     * @param port Port des Servers.
+     *
+     * @param host           Hostname des Servers.
+     * @param port           Port des Servers.
      * @param protocolPrefix Präfix für das Protokoll.
      * @return Die erstellten Eigenschaften.
      */
@@ -129,5 +150,46 @@ public class MiniMailLogin extends JDialog {
         properties.put(protocolPrefix + ".host", host);
         properties.put(protocolPrefix + ".port", port);
         return properties;
+    }
+
+    private JButton createButton(Ikon iconEnum,  String tooltiptext) {
+        JButton tempButton = new JButton();
+        FontIcon tempIcon = new FontIcon();
+        tempIcon.setIkon(iconEnum);
+        tempButton.setIcon(tempIcon);
+
+        tempButton.setToolTipText(tooltiptext);
+        return tempButton;
+    }
+
+    private void createLoginButton() {
+        loginBtn = createButton(LOGIN,"Jetzt einloggen");
+
+
+        loginBtn.addActionListener(e -> checkForAuthentication());
+//        {
+//            if (authenticate()) {
+//                new MiniMailStart("MiniMail Start");
+//                Constants.setBENUTZERNAME(benutzerFeld.getText());
+//                Constants.setPASSWORT(new String(passwortFeld.getPassword()));
+//                dispose();
+//            } else {
+//                System.err.println("FAILURE");
+//            }
+//        });
+    }
+    private void checkForAuthentication() {
+        if (authenticate()) {
+            new MiniMailStart("MiniMail Start");
+            Constants.setBENUTZERNAME(benutzerFeld.getText());
+            Constants.setPASSWORT(new String(passwortFeld.getPassword()));
+            dispose();
+
+        } else {
+            System.err.println("FAILURE");
+
+        }
+
+
     }
 }

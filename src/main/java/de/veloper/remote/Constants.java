@@ -32,6 +32,7 @@ public class Constants {
     public static void setPASSWORT(String PASSWORT) {
         Constants.PASSWORT = PASSWORT;
     }
+
     public static String getSmtpServer() {
         return SMTP_SERVER;
     }

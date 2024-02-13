@@ -13,8 +13,7 @@ public class MiniDBTools {
         try {
             //die Datenbank ist adressenDB
             verbindung = DriverManager.getConnection(arg);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Problem: \n" + e.toString());
         }
         return verbindung;
@@ -27,8 +26,7 @@ public class MiniDBTools {
         try {
             Statement state = verbindung.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ergebnisMenge = state.executeQuery(sqlAnweisung);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Problem: \n" + e.toString());
         }
         return ergebnisMenge;
@@ -42,11 +40,10 @@ public class MiniDBTools {
         boolean erfolg = false;
         try {
             DriverManager.getConnection(protokoll + "; shutdown = true");
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             erfolg = true;
         }
-        if (erfolg !=true)
+        if (erfolg != true)
             JOptionPane.showMessageDialog(null, "Das DBMS konnte nicht heruntergefahren werden.");
     }
 }
