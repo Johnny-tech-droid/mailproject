@@ -51,7 +51,7 @@ public class MiniMailLogin extends JDialog {
         setTitle("MiniMail Login");
         setSize(380, 150);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+
         setLocationByPlatform(true);
         setVisible(true);
         add(new Label(), BorderLayout.SOUTH);

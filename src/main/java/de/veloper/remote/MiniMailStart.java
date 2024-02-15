@@ -22,16 +22,12 @@ public class MiniMailStart extends JFrame {
                 case "senden" -> senden();
                 case "empfangen" -> empfangen();
                 case "ende" -> beenden();
-                case "test" -> getSizeForMenu();
+
             }
         }
     }
 
-    private void getSizeForMenu() {
-        System.out.println(this.getSize());
-    }
-
-    public MiniMailStart(String title) throws HeadlessException {
+      public MiniMailStart(String title) throws HeadlessException {
         super(title);
         JPanel guiPanel = createButtonPanel();
         add(guiPanel);
