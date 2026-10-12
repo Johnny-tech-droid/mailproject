@@ -10,7 +10,7 @@ public class Constants {
 
 
     // Die URL der Datenbank für die Verbindung mit der Datenbank
-    private static final String DB_URL = "jdbc:derby:/Users/developer/Developer/Database/mailprojectDB";
+    private static final String DB_URL = "jdbc:derby:mailprojectDB";
 
     // ----- GETTER UND SETTER ------- //
     public static String getDB_URL() {

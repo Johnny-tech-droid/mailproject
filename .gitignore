@@ -36,3 +36,10 @@ build/
 
 ### Mac OS ###
 .DS_Store
+# Added during cleanup
+.idea/
+out/
+bin/
+derby.log
+*DB/
+miniDB/

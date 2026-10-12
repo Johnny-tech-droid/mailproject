@@ -50,18 +50,20 @@ The coding style is straightforward, reflecting an experienced novice project. T
 2. Open the project in your preferred Java IDE.
 3. Run the application.
 
+## Database
+
+The app opens the embedded Derby database `mailprojectDB` relative to the working directory
+(`src/main/java/de/veloper/remote/Constants.java`). It expects the tables `empfangen` (received)
+and `gesendet` (sent).
+
 ## Note
 
 This project is a learning experiment and may not be suitable for production. Feel free to explore, experiment, and contribute to its improvement.
 
-## Author
+## License
 
-Johnny Techdroid
+MIT, see [LICENSE](LICENSE).
 
-contact@hausrund.info
+## Contact
 
-https://github.com/Johnny-tech-droid
-
----
-
-**Disclaimer**: This project is not intended for professional use, and its codebase might not meet industry standards. Use it at your own risk.
+Johnny-tech-droid · contact@hausrund.info · https://github.com/Johnny-tech-droid
